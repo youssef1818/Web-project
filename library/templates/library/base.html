@@ -58,45 +58,304 @@
 
     <footer>
         <div class="container">
-            <div class="left">
-                <div class="head">
+            <div class="footer-grid">
+                <div class="footer-about">
                     <h2>About Library</h2>
                     <p>Your gateway to knowledge and imagination. Discover, learn, and explore with our vast collection of books.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
                 </div>
-                <div class="iconz">
-                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+
+                <div class="footer-links">
+                    <h2>Quick Links</h2>
+                    <div class="links-grid">
+                        <ul>
+                            <li><a href="{% url 'home' %}"><i class="fas fa-home"></i>Home</a></li>
+                            <li><a href="{% url 'book_list' %}"><i class="fas fa-book"></i>Books</a></li>
+                            {% if user.is_authenticated %}
+                                <li><a href="{% url 'borrowed_books' %}"><i class="fas fa-book-reader"></i>My Books</a></li>
+                                <li><a href="{% url 'wishlist' %}"><i class="fas fa-heart"></i>Wishlist</a></li>
+                            {% else %}
+                                <li><a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i>Login</a></li>
+                                <li><a href="{% url 'register' %}"><i class="fas fa-user-plus"></i>Register</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="footer-contact">
+                    <h2>Contact & Hours</h2>
+                    <ul class="contact-info">
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>123 Library Street, City</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <a href="tel:+12345678900">+1 234 567 8900</a>
+                        </li>
+                        <li>
+                            <i class="fas fa-clock"></i>
+                            <span>Mon-Fri: 9AM-8PM<br>Sat-Sun: 10AM-6PM</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="footer-newsletter">
+                    <h2>Newsletter</h2>
+                    <form class="newsletter-form" id="newsletterForm">
+                        <div class="input-group">
+                            <input type="email" placeholder="Enter your email" class="form-control" required>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="mid">
-                <h2>Newsletter</h2>
-                <p>Subscribe to stay updated with our latest books and events.</p>
-                <form class="d-flex">
-                    <input type="email" placeholder="Enter your email" class="form-control me-2" required>
-                    <button type="submit" class="btn btn-outline-light"><i class="fas fa-paper-plane"></i> Subscribe</button>
-                </form>
-            </div>
-            <div class="rght">
-                <h2>Contact Info</h2>
-                <ul>
-                    <li>
-                        <i class="fas fa-map-marker-alt"></i>
-                        <a href="#" class="NKOR">123 Library Street, City</a>
-                    </li>
-                    <li>
-                        <i class="fas fa-phone"></i>
-                        <a href="tel:+12345678900" class="NKOR">+1 234 567 8900</a>
-                    </li>
-                    <li>
-                        <i class="fas fa-envelope"></i>
-                        <a href="mailto:contact@library.com" class="NKOR">contact@library.com</a>
-                    </li>
+
+            <div class="footer-bottom">
+                <p>&copy; {% now "Y" %} Library System. All rights reserved.</p>
+                <ul class="footer-bottom-links">
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Terms</a></li>
+                    <li><a href="#">FAQ</a></li>
                 </ul>
             </div>
         </div>
     </footer>
+
+    <style>
+    footer {
+        background: linear-gradient(145deg, #1b110b, #2a1f1f);
+        color: #ffffff;
+        padding: 3rem 0 0;
+        margin-top: 3rem;
+        font-size: 0.95rem;
+    }
+
+    .footer-grid {
+        display: grid;
+        grid-template-columns: 3fr 2fr 2fr 3fr;
+        gap: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    footer h2 {
+        color: #ffffff;
+        font-size: 1.2rem;
+        margin-bottom: 1.2rem;
+        font-family: 'Playfair Display', serif;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+
+    footer h2::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 2px;
+        background: #ce1212;
+    }
+
+    footer p {
+        color: rgba(255, 255, 255, 0.8);
+        line-height: 1.5;
+        margin-bottom: 1rem;
+    }
+
+    .social-links {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    .social-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: rgba(206, 18, 18, 0.1);
+        border-radius: 50%;
+        color: #ce1212;
+        transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+        background: #ce1212;
+        color: #ffffff;
+        transform: translateY(-2px);
+    }
+
+    .footer-links ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .footer-links li {
+        margin-bottom: 0.5rem;
+    }
+
+    .footer-links a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .footer-links a i {
+        font-size: 0.9rem;
+        color: #ce1212;
+    }
+
+    .footer-links a:hover {
+        color: #ce1212;
+        transform: translateX(3px);
+    }
+
+    .contact-info {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .contact-info li {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .contact-info i {
+        width: 32px;
+        height: 32px;
+        background: rgba(206, 18, 18, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ce1212;
+        font-size: 0.9rem;
+    }
+
+    .contact-info a,
+    .contact-info span {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .contact-info a:hover {
+        color: #ce1212;
+    }
+
+    .newsletter-form .input-group {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .newsletter-form .form-control {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #ffffff;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        height: 40px;
+    }
+
+    .newsletter-form .btn {
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        background: #ce1212;
+        border: none;
+        height: 40px;
+        width: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .newsletter-form .btn:hover {
+        background: #a30f0f;
+        transform: translateY(-2px);
+    }
+
+    .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 1rem 0;
+        margin-top: 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.85rem;
+    }
+
+    .footer-bottom p {
+        margin: 0;
+    }
+
+    .footer-bottom-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    .footer-bottom-links a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .footer-bottom-links a:hover {
+        color: #ce1212;
+    }
+
+    @media (max-width: 1200px) {
+        .footer-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .footer-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .footer-bottom {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .footer-bottom-links {
+            justify-content: center;
+        }
+    }
+    </style>
+
+    <script>
+    document.getElementById('newsletterForm')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = this.querySelector('input[type="email"]').value;
+        // Add your newsletter subscription logic here
+        alert('Thank you for subscribing! We will keep you updated with our latest news.');
+        this.reset();
+    });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
