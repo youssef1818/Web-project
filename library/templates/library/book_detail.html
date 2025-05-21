@@ -1,0 +1,77 @@
+{% extends 'library/base.html' %}
+
+{% block title %}{{ book.title }} - Library System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 mb-4 mb-md-0">
+        <div class="card">
+            {% if book.cover_image %}
+                <img src="{{ book.cover_image.url }}" class="card-img-top" alt="{{ book.title }}" style="height: 400px; object-fit: cover;">
+            {% else %}
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 400px;">
+                    <i class="fas fa-book fa-6x text-muted"></i>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h1 class="mb-3">{{ book.title }}</h1>
+        <h5 class="text-muted mb-4">By {{ book.author }}</h5>
+        
+        <div class="mb-4">
+            <h4 class="mb-3">Description</h4>
+            <p class="lead">{{ book.description }}</p>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h4 class="mb-3">Details</h4>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <strong>ISBN:</strong> {{ book.isbn }}
+                    </li>
+                    <li class="mb-2">
+                        <strong>Publication Date:</strong> {{ book.publication_date }}
+                    </li>
+                    <li class="mb-2">
+                        <strong>Available Copies:</strong> {{ book.available_copies }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        {% if user.is_authenticated %}
+            <div class="d-flex gap-2">
+                {% if not is_borrowed and book.available_copies > 0 %}
+                    <a href="{% url 'borrow_book' book.id %}" class="btn btn-primary">
+                        <i class="fas fa-book-reader me-2"></i>Borrow Book
+                    </a>
+                {% elif is_borrowed %}
+                    <a href="{% url 'return_book' book.id %}" class="btn btn-success">
+                        <i class="fas fa-undo me-2"></i>Return Book
+                    </a>
+                {% else %}
+                    <button class="btn btn-secondary" disabled>
+                        <i class="fas fa-times me-2"></i>Not Available
+                    </button>
+                {% endif %}
+
+                {% if not is_wishlisted %}
+                    <a href="{% url 'add_to_wishlist' book.id %}" class="btn btn-outline-primary">
+                        <i class="fas fa-heart me-2"></i>Add to Wishlist
+                    </a>
+                {% else %}
+                    <a href="{% url 'remove_from_wishlist' book.id %}" class="btn btn-outline-danger">
+                        <i class="fas fa-heart-broken me-2"></i>Remove from Wishlist
+                    </a>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>Please <a href="{% url 'login' %}">login</a> to borrow this book or add it to your wishlist.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 
