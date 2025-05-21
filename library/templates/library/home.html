@@ -2,50 +2,365 @@
 
 {% block title %}Home - Library System{% endblock %}
 
+{% block extra_head %}
+<style>
+    .hero-section {
+        background: linear-gradient(145deg, #1b110b, #2a1f1f);
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(206, 18, 18, 0.1), transparent);
+        pointer-events: none;
+    }
+
+    .hero-content {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
+
+    .featured-books {
+        padding: 3rem 0;
+        background: linear-gradient(145deg, #1b110b, #2a1f1f);
+        position: relative;
+    }
+
+    .featured-books::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(206, 18, 18, 0.05), transparent);
+        pointer-events: none;
+    }
+
+    .swiper {
+        width: 100%;
+        padding: 2rem 1rem;
+    }
+
+    .swiper-slide {
+        width: 200px;
+        height: 300px;
+    }
+
+    .book-card {
+        height: 100%;
+        background: linear-gradient(145deg, #2a1f1f, #3a2f2f);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .book-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(206, 18, 18, 0.3);
+    }
+
+    .book-cover {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .book-card:hover .book-cover {
+        transform: scale(1.05);
+    }
+
+    .book-info {
+        padding: 0.75rem;
+        background: linear-gradient(to top, #1b110b 0%, rgba(27, 17, 11, 0.8) 100%);
+    }
+
+    .book-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin: 0;
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .book-author {
+        font-size: 0.8rem;
+        color: #ce1212;
+        margin: 0.25rem 0 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .books-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1.5rem;
+        padding: 1rem;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+        color: #ffffff;
+        font-family: 'Playfair Display', serif;
+    }
+
+    .section-title::after {
+        content: '';
+        display: block;
+        width: 50px;
+        height: 3px;
+        background: #ce1212;
+        margin: 1rem auto;
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+        color: #ce1212;
+    }
+
+    .swiper-pagination-bullet {
+        background: #ce1212;
+    }
+
+    .swiper-pagination-bullet-active {
+        background: #ce1212;
+    }
+
+    .no-image-placeholder {
+        width: 100%;
+        height: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(145deg, #2a1f1f, #3a2f2f);
+        color: #ce1212;
+    }
+
+    .no-image-placeholder i {
+        font-size: 3rem;
+        opacity: 0.7;
+        transition: opacity 0.3s ease;
+    }
+
+    .book-card:hover .no-image-placeholder i {
+        opacity: 1;
+    }
+
+    .cta-section {
+        text-align: center;
+        margin: 4rem 0;
+        padding: 4rem 0;
+        background: linear-gradient(145deg, #2a1f1f, #3a2f2f);
+        position: relative;
+    }
+
+    .cta-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(206, 18, 18, 0.05), transparent);
+        pointer-events: none;
+    }
+
+    .cta-buttons .btn {
+        margin: 0 0.5rem;
+        padding: 0.75rem 2rem;
+        border-radius: 50px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background: #ce1212;
+        border-color: #ce1212;
+    }
+
+    .btn-primary:hover {
+        background: #a30f0f;
+        border-color: #a30f0f;
+        transform: translateY(-2px);
+    }
+
+    .btn-outline-primary {
+        color: #ce1212;
+        border-color: #ce1212;
+    }
+
+    .btn-outline-primary:hover {
+        background: #ce1212;
+        color: #ffffff;
+        transform: translateY(-2px);
+    }
+
+    .book-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        height: 100%;
+    }
+
+    .book-link:hover {
+        color: inherit;
+    }
+
+    @media (max-width: 768px) {
+        .books-grid {
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+
+        .book-cover {
+            height: 180px;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="text-center mb-5">
-    <h1 class="display-4 mb-3">Welcome to the Library System</h1>
-    <p class="lead text-muted">Discover thousands of books and manage your reading journey.</p>
-    {% if not user.is_authenticated %}
-        <div class="mt-4">
-            <a href="{% url 'register' %}" class="btn btn-primary btn-lg me-3">Get Started</a>
-            <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg">Login</a>
-        </div>
-    {% endif %}
+<div class="hero-section">
+    <div class="hero-content">
+        <h1 class="display-4 mb-3">Welcome to the Library System</h1>
+        <p class="lead text-muted">Discover thousands of books and manage your reading journey.</p>
+        {% if not user.is_authenticated %}
+            <div class="cta-buttons mt-4">
+                <a href="{% url 'register' %}" class="btn btn-primary btn-lg me-3">Get Started</a>
+                <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg">Login</a>
+            </div>
+        {% endif %}
+    </div>
 </div>
 
-<h2 class="mb-4">Latest Books</h2>
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    {% for book in books %}
-        <div class="col">
-            <div class="card h-100">
-                {% if book.cover_image %}
-                    <img src="{{ book.cover_image.url }}" class="card-img-top" alt="{{ book.title }}" style="height: 300px; object-fit: cover;">
-                {% else %}
-                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
-                        <i class="fas fa-book fa-4x text-muted"></i>
+<div class="featured-books">
+    <div class="container">
+        <h2 class="section-title">Featured Books</h2>
+        
+        <!-- Swiper -->
+        <div class="swiper featured-swiper">
+            <div class="swiper-wrapper">
+                {% for book in books|slice:":8" %}
+                    <div class="swiper-slide">
+                        <a href="{% url 'book_detail' book.id %}" class="book-link">
+                            <div class="book-card">
+                                {% if book.cover_image %}
+                                    <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-cover">
+                                {% else %}
+                                    <div class="no-image-placeholder book-cover">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                {% endif %}
+                                <div class="book-info">
+                                    <h3 class="book-title">{{ book.title }}</h3>
+                                    <p class="book-author">{{ book.author }}</p>
+                                </div>
+                            </div>
+                        </a>
                     </div>
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title">{{ book.title }}</h5>
-                    <p class="card-text text-muted">By {{ book.author }}</p>
-                    <p class="card-text">{{ book.description|truncatewords:30 }}</p>
-                </div>
-                <div class="card-footer bg-transparent border-0">
-                    <a href="{% url 'book_detail' book.id %}" class="btn btn-primary w-100">View Details</a>
-                </div>
+                {% endfor %}
             </div>
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
         </div>
-    {% empty %}
-        <div class="col-12">
-            <div class="alert alert-info">
-                No books available at the moment.
-            </div>
+
+        <h2 class="section-title mt-5">All Books</h2>
+        <div class="books-grid">
+            {% for book in books %}
+                <a href="{% url 'book_detail' book.id %}" class="book-link">
+                    <div class="book-card">
+                        {% if book.cover_image %}
+                            <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-cover">
+                        {% else %}
+                            <div class="no-image-placeholder book-cover">
+                                <i class="fas fa-book"></i>
+                            </div>
+                        {% endif %}
+                        <div class="book-info">
+                            <h3 class="book-title">{{ book.title }}</h3>
+                            <p class="book-author">{{ book.author }}</p>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
         </div>
-    {% endfor %}
+    </div>
 </div>
 
-<div class="text-center mt-5">
-    <a href="{% url 'book_list' %}" class="btn btn-lg btn-outline-primary">View All Books</a>
+<div class="cta-section">
+    <div class="container">
+        <h2 class="mb-4">Ready to Explore More?</h2>
+        <div class="cta-buttons">
+            <a href="{% url 'book_list' %}" class="btn btn-primary btn-lg">Browse All Books</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'borrowed_books' %}" class="btn btn-outline-primary btn-lg">My Books</a>
+            {% endif %}
+        </div>
+    </div>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        new Swiper('.featured-swiper', {
+            slidesPerView: 'auto',
+            spaceBetween: 20,
+            centeredSlides: true,
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            breakpoints: {
+                320: {
+                    slidesPerView: 1,
+                    spaceBetween: 10
+                },
+                480: {
+                    slidesPerView: 2,
+                    spaceBetween: 15
+                },
+                768: {
+                    slidesPerView: 3,
+                    spaceBetween: 20
+                },
+                1024: {
+                    slidesPerView: 4,
+                    spaceBetween: 20
+                }
+            }
+        });
+    });
+</script>
 {% endblock %} 

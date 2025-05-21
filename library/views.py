@@ -3,20 +3,21 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Q
-from .forms import UserRegistrationForm, BookForm
+from .forms import CustomUserCreationForm, BookForm
 from .models import Book, BorrowedBook, WishList
 from django.utils import timezone
+from django.core.paginator import Paginator
 
 def register(request):
     if request.method == 'POST':
-        form = UserRegistrationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
             messages.success(request, 'Registration successful!')
             return redirect('home')
     else:
-        form = UserRegistrationForm()
+        form = CustomUserCreationForm()
     return render(request, 'library/register.html', {'form': form})
 
 def home(request):
@@ -113,3 +114,56 @@ def remove_from_wishlist(request, book_id):
     WishList.objects.filter(user=request.user, book=book).delete()
     messages.success(request, f'{book.title} has been removed from your wishlist')
     return redirect('wishlist')
+
+@login_required
+def manage_books(request):
+    if not request.user.userprofile.is_librarian:
+        messages.error(request, 'Access denied. Librarian privileges required.')
+        return redirect('home')
+    
+    books = Book.objects.all().order_by('title')
+    if request.method == 'POST':
+        form = BookForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Book added successfully!')
+            return redirect('manage_books')
+    else:
+        form = BookForm()
+    
+    return render(request, 'library/manage_books.html', {
+        'books': books,
+        'form': form
+    })
+
+@login_required
+def delete_book(request, book_id):
+    if not request.user.userprofile.is_librarian:
+        messages.error(request, 'Access denied. Librarian privileges required.')
+        return redirect('home')
+    
+    book = get_object_or_404(Book, id=book_id)
+    book.delete()
+    messages.success(request, 'Book deleted successfully!')
+    return redirect('manage_books')
+
+@login_required
+def edit_book(request, book_id):
+    if not request.user.userprofile.is_librarian:
+        messages.error(request, 'Access denied. Librarian privileges required.')
+        return redirect('home')
+    
+    book = get_object_or_404(Book, id=book_id)
+    if request.method == 'POST':
+        form = BookForm(request.POST, request.FILES, instance=book)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Book updated successfully!')
+            return redirect('manage_books')
+    else:
+        form = BookForm(instance=book)
+    
+    return render(request, 'library/edit_book.html', {
+        'form': form,
+        'book': book
+    })

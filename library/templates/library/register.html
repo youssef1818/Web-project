@@ -12,14 +12,40 @@
                     {% csrf_token %}
                     {% for field in form %}
                         <div class="mb-3">
-                            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                            <input type="{{ field.field.widget.input_type }}" 
-                                   name="{{ field.html_name }}"
-                                   id="{{ field.id_for_label }}"
-                                   class="form-control {% if field.errors %}is-invalid{% endif %}"
-                                   {% if field.field.required %}required{% endif %}>
+                            {% if field.name == 'role' %}
+                                <label class="form-label d-block">Select Role</label>
+                                <div class="role-options">
+                                    {% for radio in field %}
+                                        <div class="role-option">
+                                            <input type="radio" 
+                                                   name="{{ field.name }}"
+                                                   value="{{ radio.data.value }}"
+                                                   id="{{ radio.id_for_label }}"
+                                                   class="role-input"
+                                                   {% if radio.data.selected %}checked{% endif %}
+                                                   required>
+                                            <label for="{{ radio.id_for_label }}" class="role-label">
+                                                {% if radio.choice_value == 'True' %}
+                                                    <i class="fas fa-user-tie"></i>
+                                                {% else %}
+                                                    <i class="fas fa-user"></i>
+                                                {% endif %}
+                                                {{ radio.choice_label }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                <input type="{{ field.field.widget.input_type }}" 
+                                       name="{{ field.html_name }}"
+                                       id="{{ field.id_for_label }}"
+                                       class="form-control {% if field.errors %}is-invalid{% endif %}"
+                                       {% if field.field.required %}required{% endif %}>
+                            {% endif %}
+                            
                             {% if field.errors %}
-                                <div class="invalid-feedback">
+                                <div class="invalid-feedback d-block">
                                     {{ field.errors|join:", " }}
                                 </div>
                             {% endif %}
@@ -41,4 +67,51 @@
         </div>
     </div>
 </div>
+
+<style>
+.role-options {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.role-option {
+    flex: 1;
+}
+
+.role-input {
+    display: none;
+}
+
+.role-label {
+    display: block;
+    padding: 1rem;
+    text-align: center;
+    border: 2px solid rgba(206, 18, 18, 0.2);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: linear-gradient(145deg, #1b110b, #554c4c);
+    color: #ffffff;
+}
+
+.role-label i {
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #ce1212;
+}
+
+.role-input:checked + .role-label {
+    border-color: #ce1212;
+    background: linear-gradient(145deg, #2a1f1f, #3a2f2f);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.role-label:hover {
+    border-color: #ce1212;
+    transform: translateY(-2px);
+}
+</style>
 {% endblock %} 
