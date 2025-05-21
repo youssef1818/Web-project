@@ -6,8 +6,8 @@
 <style>
     .hero-section {
         background: linear-gradient(145deg, #1b110b, #2a1f1f);
-        padding: 4rem 0;
-        margin-bottom: 3rem;
+        padding: 3rem 0;
+        margin-bottom: 2rem;
         position: relative;
         overflow: hidden;
     }
@@ -24,7 +24,7 @@
     }
 
     .hero-content {
-        max-width: 800px;
+        max-width: 700px;
         margin: 0 auto;
         text-align: center;
         position: relative;
@@ -32,62 +32,100 @@
     }
 
     .featured-books {
-        padding: 3rem 0;
+        padding: 2rem 0;
         background: linear-gradient(145deg, #1b110b, #2a1f1f);
         position: relative;
+        overflow: hidden;
     }
 
-    .featured-books::before {
+    .swiper-container {
+        position: relative;
+        padding: 1rem 3rem;
+    }
+
+    .swiper {
+        width: 100%;
+        padding: 1.5rem 0;
+        margin: 0 auto;
+        overflow: visible;
+    }
+
+    .swiper-slide {
+        width: 180px;
+        height: 270px;
+        opacity: 0.5;
+        transition: all 0.3s ease;
+        transform: scale(0.9);
+        perspective: 1000px;
+    }
+
+    .swiper-slide-active {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    .swiper-slide-next,
+    .swiper-slide-prev {
+        opacity: 0.7;
+        transform: scale(0.95);
+    }
+
+    .book-card {
+        height: 100%;
+        position: relative;
+        cursor: pointer;
+        transform-style: preserve-3d;
+        transition: all 0.5s ease;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(135deg, #2a1f1f 0%, #1b110b 100%);
+    }
+
+    .book-card::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(45deg, rgba(206, 18, 18, 0.05), transparent);
-        pointer-events: none;
+        background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 0.8) 100%
+        );
+        z-index: 1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
     }
 
-    .swiper {
-        width: 100%;
-        padding: 2rem 1rem;
-    }
-
-    .swiper-slide {
-        width: 200px;
-        height: 300px;
-    }
-
-    .book-card {
-        height: 100%;
-        background: linear-gradient(145deg, #2a1f1f, #3a2f2f);
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-        position: relative;
-        cursor: pointer;
-    }
-
-    .book-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(206, 18, 18, 0.3);
+    .book-card:hover::before {
+        opacity: 1;
     }
 
     .book-cover {
         width: 100%;
-        height: 220px;
+        height: 100%;
         object-fit: cover;
-        transition: transform 0.3s ease;
-    }
-
-    .book-card:hover .book-cover {
-        transform: scale(1.05);
+        border-radius: 12px;
+        transition: transform 0.5s ease;
     }
 
     .book-info {
-        padding: 0.75rem;
-        background: linear-gradient(to top, #1b110b 0%, rgba(27, 17, 11, 0.8) 100%);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+        background: none;
+        color: #fff;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+        z-index: 2;
+    }
+
+    .book-card:hover .book-info {
+        transform: translateY(0);
     }
 
     .book-title {
@@ -95,81 +133,118 @@
         font-weight: 600;
         margin: 0;
         color: #ffffff;
-        white-space: nowrap;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
         overflow: hidden;
         text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        line-height: 1.2;
     }
 
     .book-author {
         font-size: 0.8rem;
         color: #ce1212;
-        margin: 0.25rem 0 0;
-        white-space: nowrap;
+        margin: 0.3rem 0 0;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         overflow: hidden;
         text-overflow: ellipsis;
-    }
-
-    .books-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 1.5rem;
-        padding: 1rem;
-    }
-
-    .section-title {
-        text-align: center;
-        margin-bottom: 2rem;
-        position: relative;
-        color: #ffffff;
-        font-family: 'Playfair Display', serif;
-    }
-
-    .section-title::after {
-        content: '';
-        display: block;
-        width: 50px;
-        height: 3px;
-        background: #ce1212;
-        margin: 1rem auto;
-    }
-
-    .swiper-button-next,
-    .swiper-button-prev {
-        color: #ce1212;
-    }
-
-    .swiper-pagination-bullet {
-        background: #ce1212;
-    }
-
-    .swiper-pagination-bullet-active {
-        background: #ce1212;
+        white-space: nowrap;
     }
 
     .no-image-placeholder {
         width: 100%;
-        height: 280px;
+        height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(145deg, #2a1f1f, #3a2f2f);
+        background: linear-gradient(135deg, #2a1f1f 0%, #1b110b 100%);
         color: #ce1212;
+        border-radius: 12px;
     }
 
     .no-image-placeholder i {
         font-size: 3rem;
         opacity: 0.7;
         transition: opacity 0.3s ease;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
     }
 
     .book-card:hover .no-image-placeholder i {
         opacity: 1;
     }
 
+    .swiper-button-next,
+    .swiper-button-prev {
+        color: #fff;
+        width: 40px;
+        height: 40px;
+        background: rgba(206, 18, 18, 0.8);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+    .swiper-button-next:hover,
+    .swiper-button-prev:hover {
+        background: rgba(206, 18, 18, 1);
+        transform: scale(1.1);
+    }
+
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    .swiper-pagination {
+        position: relative;
+        bottom: -10px;
+        margin-top: 1rem;
+    }
+
+    .swiper-pagination-bullet {
+        width: 8px;
+        height: 8px;
+        background: rgba(206, 18, 18, 0.5);
+        opacity: 0.5;
+        transition: all 0.3s ease;
+    }
+
+    .swiper-pagination-bullet-active {
+        background: #ce1212;
+        opacity: 1;
+        transform: scale(1.2);
+    }
+
+    .books-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1.25rem;
+        padding: 1rem;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        position: relative;
+        color: #ffffff;
+        font-family: 'Playfair Display', serif;
+        font-size: 1.75rem;
+    }
+
+    .section-title::after {
+        content: '';
+        display: block;
+        width: 40px;
+        height: 2px;
+        background: #ce1212;
+        margin: 0.75rem auto;
+    }
+
     .cta-section {
         text-align: center;
-        margin: 4rem 0;
-        padding: 4rem 0;
+        margin: 3rem 0;
+        padding: 3rem 0;
         background: linear-gradient(145deg, #2a1f1f, #3a2f2f);
         position: relative;
     }
@@ -187,7 +262,7 @@
 
     .cta-buttons .btn {
         margin: 0 0.5rem;
-        padding: 0.75rem 2rem;
+        padding: 0.6rem 1.75rem;
         border-radius: 50px;
         font-weight: 500;
         letter-spacing: 0.5px;
@@ -227,14 +302,35 @@
         color: inherit;
     }
 
+    .hero-content .display-4 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-content .lead {
+        font-size: 1.1rem;
+    }
+
     @media (max-width: 768px) {
         .books-grid {
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
             gap: 1rem;
         }
 
         .book-cover {
-            height: 180px;
+            height: 160px;
+        }
+
+        .hero-content .display-4 {
+            font-size: 2rem;
+        }
+
+        .hero-content .lead {
+            font-size: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
         }
     }
 </style>
@@ -258,32 +354,33 @@
     <div class="container">
         <h2 class="section-title">Featured Books</h2>
         
-        <!-- Swiper -->
-        <div class="swiper featured-swiper">
-            <div class="swiper-wrapper">
-                {% for book in books|slice:":8" %}
-                    <div class="swiper-slide">
-                        <a href="{% url 'book_detail' book.id %}" class="book-link">
-                            <div class="book-card">
-                                {% if book.cover_image %}
-                                    <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-cover">
-                                {% else %}
-                                    <div class="no-image-placeholder book-cover">
-                                        <i class="fas fa-book"></i>
+        <div class="swiper-container">
+            <div class="swiper featured-swiper">
+                <div class="swiper-wrapper">
+                    {% for book in books|slice:":8" %}
+                        <div class="swiper-slide">
+                            <a href="{% url 'book_detail' book.id %}" class="book-link">
+                                <div class="book-card">
+                                    {% if book.cover_image %}
+                                        <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-cover">
+                                    {% else %}
+                                        <div class="no-image-placeholder">
+                                            <i class="fas fa-book"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div class="book-info">
+                                        <h3 class="book-title">{{ book.title }}</h3>
+                                        <p class="book-author">{{ book.author }}</p>
                                     </div>
-                                {% endif %}
-                                <div class="book-info">
-                                    <h3 class="book-title">{{ book.title }}</h3>
-                                    <p class="book-author">{{ book.author }}</p>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
-                {% endfor %}
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
             </div>
-            <div class="swiper-pagination"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
         </div>
 
         <h2 class="section-title mt-5">All Books</h2>
@@ -294,7 +391,7 @@
                         {% if book.cover_image %}
                             <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-cover">
                         {% else %}
-                            <div class="no-image-placeholder book-cover">
+                            <div class="no-image-placeholder">
                                 <i class="fas fa-book"></i>
                             </div>
                         {% endif %}
@@ -327,9 +424,15 @@
     document.addEventListener('DOMContentLoaded', function() {
         new Swiper('.featured-swiper', {
             slidesPerView: 'auto',
-            spaceBetween: 20,
             centeredSlides: true,
+            spaceBetween: 30,
             loop: true,
+            speed: 800,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true
+            },
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
@@ -338,26 +441,30 @@
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
             },
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
+            effect: 'coverflow',
+            coverflowEffect: {
+                rotate: 5,
+                stretch: 0,
+                depth: 100,
+                modifier: 1.5,
+                slideShadows: false,
             },
             breakpoints: {
                 320: {
                     slidesPerView: 1,
-                    spaceBetween: 10
+                    spaceBetween: 20
                 },
                 480: {
                     slidesPerView: 2,
-                    spaceBetween: 15
+                    spaceBetween: 25
                 },
                 768: {
                     slidesPerView: 3,
-                    spaceBetween: 20
+                    spaceBetween: 30
                 },
                 1024: {
                     slidesPerView: 4,
-                    spaceBetween: 20
+                    spaceBetween: 30
                 }
             }
         });
